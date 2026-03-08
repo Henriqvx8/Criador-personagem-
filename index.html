@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Criador de Personagem RPG</title>
+<title>Criador de Personagem Escolar</title>
+
 <style>
 body{
 font-family: Arial, sans-serif;
@@ -43,7 +44,7 @@ border:none;
 font-size:15px;
 background:#222;
 color:white;
-height:180px;
+height:260px;
 }
 
 button{
@@ -62,28 +63,28 @@ font-size:16px;
 <body>
 
 <div class="container">
-<h1>🎮 Criador de Personagem</h1>
+<h1>🎒 Criador de Personagem Escolar</h1>
 
 <label>Nome</label>
 <input id="nome" placeholder="Nome do personagem" oninput="gerar()">
 
-<label>Raça</label>
-<select id="raca" onchange="gerar()">
-<option>Humano</option>
-<option>Elfo</option>
-<option>Anão</option>
-<option>Orc</option>
-<option>Goblin</option>
-<option>Fada</option>
+<label>Gênero</label>
+<select id="genero" onchange="gerar()">
+<option>Masculino</option>
+<option>Feminino</option>
 </select>
 
-<label>Classe</label>
+<label>Origem Escolar</label>
 <select id="classe" onchange="gerar()">
-<option>Guerreiro</option>
-<option>Mago</option>
-<option>Arqueiro</option>
-<option>Ladino</option>
-<option>Caçador</option>
+<option>Nerd</option>
+<option>Aluno de Teatro</option>
+<option>Atleta</option>
+<option>Jornalista</option>
+<option>Aluno Rebelde</option>
+<option>Representante de Sala</option>
+<option>Influencer</option>
+<option>Bibliotecário</option>
+<option>Valentão</option>
 </select>
 
 <label>Cabelo</label>
@@ -93,7 +94,6 @@ font-size:16px;
 <option>Rabo de cavalo</option>
 <option>Espetado</option>
 <option>Ondulado</option>
-<option>Careca</option>
 </select>
 
 <label>Cor do cabelo</label>
@@ -115,25 +115,6 @@ font-size:16px;
 <option>Cicatriz no rosto</option>
 </select>
 
-<label>Roupa (iniciais)</label>
-<select id="roupa" onchange="gerar()">
-<option>Roupa de aventureiro</option>
-<option>Armadura leve</option>
-<option>Roupa simples</option>
-<option>Roupa de caçador</option>
-<option>Manto simples</option>
-<option>Roupa de viajante</option>
-</select>
-
-<label>Arma inicial</label>
-<select id="arma" onchange="gerar()">
-<option>Espada simples</option>
-<option>Arco simples</option>
-<option>Adaga</option>
-<option>Cajado de madeira</option>
-<option>Machado pequeno</option>
-</select>
-
 <textarea id="resultado" readonly></textarea>
 
 <button onclick="copiar()">Copiar Resultado</button>
@@ -141,30 +122,80 @@ font-size:16px;
 </div>
 
 <script>
+
+const origens = {
+
+"Nerd":{
+pericias:"Investigação, Tecnologia",
+habilidade:"Mente Analítica: +2 em testes de Investigação ou Tecnologia ao analisar pistas ou computadores."
+},
+
+"Aluno de Teatro":{
+pericias:"Enganação, Artes",
+habilidade:"Atuação Convincente: uma vez por cena pode rerrolar teste de Enganação."
+},
+
+"Atleta":{
+pericias:"Atletismo, Fortitude",
+habilidade:"Condicionamento Físico: +2 em Atletismo durante corridas ou perseguições."
+},
+
+"Jornalista":{
+pericias:"Investigação, Percepção",
+habilidade:"Caçador de Histórias: uma vez por sessão o mestre fornece uma pista."
+},
+
+"Aluno Rebelde":{
+pericias:"Crime, Furtividade",
+habilidade:"Passos Silenciosos: +2 em Furtividade dentro da escola."
+},
+
+"Representante de Sala":{
+pericias:"Persuasão, Vontade",
+habilidade:"Voz da Turma: uma vez por cena dá +1d em teste social de um aliado."
+},
+
+"Influencer":{
+pericias:"Persuasão, Enganação",
+habilidade:"Popularidade: +2 em testes sociais com estudantes."
+},
+
+"Bibliotecário":{
+pericias:"Investigação, Ciências",
+habilidade:"Arquivo Vivo: +2 em investigação ao pesquisar livros."
+},
+
+"Valentão":{
+pericias:"Intimidação, Crime",
+habilidade:"Presença Ameaçadora: uma vez por cena rola +1d em Intimidação."
+}
+
+}
+
 function gerar(){
 
 let nome = document.getElementById("nome").value || "(sem nome)"
-let raca = document.getElementById("raca").value
+let genero = document.getElementById("genero").value
 let classe = document.getElementById("classe").value
 let cabelo = document.getElementById("cabelo").value
 let corcabelo = document.getElementById("corcabelo").value
 let rosto = document.getElementById("rosto").value
-let roupa = document.getElementById("roupa").value
-let arma = document.getElementById("arma").value
+
+let pericias = origens[classe].pericias
+let habilidade = origens[classe].habilidade
 
 let texto =
-"PERSONAGEM RPG\n\n"+
+"PERSONAGEM ESCOLAR\n\n"+
 "Nome: "+nome+"\n"+
-"Raça: "+raca+"\n"+
-"Classe: "+classe+"\n"+
+"Gênero: "+genero+"\n"+
+"Origem: "+classe+"\n\n"+
 "Cabelo: "+cabelo+"\n"+
 "Cor do cabelo: "+corcabelo+"\n"+
-"Rosto: "+rosto+"\n"+
-"Roupa: "+roupa+"\n"+
-"Arma: "+arma
+"Rosto: "+rosto+"\n\n"+
+"Perícias: "+pericias+"\n\n"+
+"Habilidade:\n"+habilidade
 
-let resultado = document.getElementById("resultado")
-resultado.value = texto
+document.getElementById("resultado").value = texto
 }
 
 function copiar(){
@@ -175,6 +206,7 @@ alert("Personagem copiado!")
 }
 
 gerar()
+
 </script>
 
 </body>
