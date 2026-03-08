@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Criador de Personagem RPG</title>
+<style>
+body{
+font-family: Arial, sans-serif;
+background:#111;
+color:white;
+margin:0;
+padding:12px;
+}
+
+h1{text-align:center}
+
+.container{
+max-width:600px;
+margin:auto;
+}
+
+label{
+display:block;
+margin-top:12px;
+}
+
+select,input{
+width:100%;
+padding:12px;
+margin-top:4px;
+border-radius:10px;
+border:none;
+font-size:16px;
+}
+
+textarea{
+width:100%;
+margin-top:20px;
+padding:12px;
+border-radius:10px;
+border:none;
+font-size:15px;
+background:#222;
+color:white;
+height:180px;
+}
+
+button{
+width:100%;
+padding:12px;
+margin-top:10px;
+border:none;
+border-radius:10px;
+background:#4CAF50;
+color:white;
+font-size:16px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h1>🎮 Criador de Personagem</h1>
+
+<label>Nome</label>
+<input id="nome" placeholder="Nome do personagem" oninput="gerar()">
+
+<label>Raça</label>
+<select id="raca" onchange="gerar()">
+<option>Humano</option>
+<option>Elfo</option>
+<option>Anão</option>
+<option>Orc</option>
+<option>Goblin</option>
+<option>Fada</option>
+</select>
+
+<label>Classe</label>
+<select id="classe" onchange="gerar()">
+<option>Guerreiro</option>
+<option>Mago</option>
+<option>Arqueiro</option>
+<option>Ladino</option>
+<option>Caçador</option>
+</select>
+
+<label>Cabelo</label>
+<select id="cabelo" onchange="gerar()">
+<option>Curto</option>
+<option>Longo</option>
+<option>Rabo de cavalo</option>
+<option>Espetado</option>
+<option>Ondulado</option>
+<option>Careca</option>
+</select>
+
+<label>Cor do cabelo</label>
+<select id="corcabelo" onchange="gerar()">
+<option>Preto</option>
+<option>Castanho</option>
+<option>Loiro</option>
+<option>Branco</option>
+<option>Vermelho</option>
+<option>Azul</option>
+</select>
+
+<label>Rosto</label>
+<select id="rosto" onchange="gerar()">
+<option>Normal</option>
+<option>Sério</option>
+<option>Feliz</option>
+<option>Misterioso</option>
+<option>Cicatriz no rosto</option>
+</select>
+
+<label>Roupa (iniciais)</label>
+<select id="roupa" onchange="gerar()">
+<option>Roupa de aventureiro</option>
+<option>Armadura leve</option>
+<option>Roupa simples</option>
+<option>Roupa de caçador</option>
+<option>Manto simples</option>
+<option>Roupa de viajante</option>
+</select>
+
+<label>Arma inicial</label>
+<select id="arma" onchange="gerar()">
+<option>Espada simples</option>
+<option>Arco simples</option>
+<option>Adaga</option>
+<option>Cajado de madeira</option>
+<option>Machado pequeno</option>
+</select>
+
+<textarea id="resultado" readonly></textarea>
+
+<button onclick="copiar()">Copiar Resultado</button>
+
+</div>
+
+<script>
+function gerar(){
+
+let nome = document.getElementById("nome").value || "(sem nome)"
+let raca = document.getElementById("raca").value
+let classe = document.getElementById("classe").value
+let cabelo = document.getElementById("cabelo").value
+let corcabelo = document.getElementById("corcabelo").value
+let rosto = document.getElementById("rosto").value
+let roupa = document.getElementById("roupa").value
+let arma = document.getElementById("arma").value
+
+let texto =
+"PERSONAGEM RPG\n\n"+
+"Nome: "+nome+"\n"+
+"Raça: "+raca+"\n"+
+"Classe: "+classe+"\n"+
+"Cabelo: "+cabelo+"\n"+
+"Cor do cabelo: "+corcabelo+"\n"+
+"Rosto: "+rosto+"\n"+
+"Roupa: "+roupa+"\n"+
+"Arma: "+arma
+
+let resultado = document.getElementById("resultado")
+resultado.value = texto
+}
+
+function copiar(){
+let campo = document.getElementById("resultado")
+campo.select()
+document.execCommand("copy")
+alert("Personagem copiado!")
+}
+
+gerar()
+</script>
+
+</body>
+</html>
