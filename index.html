@@ -2,46 +2,58 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sistema de XP RPG</title>
 
 <style>
 
 body{
-font-family:Arial;
+font-family:Arial, sans-serif;
 background:#111;
 color:white;
+margin:0;
+padding:15px;
+}
+
+h1{
 text-align:center;
-padding:20px;
 }
 
 .container{
-max-width:500px;
+max-width:600px;
 margin:auto;
 }
 
-input,button{
-padding:10px;
-margin:5px;
+input{
+width:100%;
+padding:12px;
+margin-top:8px;
 border:none;
-border-radius:8px;
+border-radius:10px;
 font-size:16px;
 }
 
 button{
+width:100%;
+padding:12px;
+margin-top:8px;
+border:none;
+border-radius:10px;
+font-size:16px;
 background:#4CAF50;
 color:white;
-cursor:pointer;
 }
 
 .player{
-background:#222;
+background:#1b1b1b;
 padding:15px;
 margin-top:15px;
-border-radius:10px;
+border-radius:12px;
 }
 
 .bar{
 width:100%;
+height:22px;
 background:#333;
 border-radius:10px;
 overflow:hidden;
@@ -49,9 +61,16 @@ margin-top:10px;
 }
 
 .progress{
-height:20px;
+height:100%;
 background:#4CAF50;
 width:0%;
+transition:0.4s;
+}
+
+.info{
+margin-top:6px;
+font-size:14px;
+opacity:0.8;
 }
 
 </style>
@@ -60,7 +79,7 @@ width:0%;
 
 <body>
 
-<h1>🎮 Sistema de XP</h1>
+<h1>⭐ Sistema de XP</h1>
 
 <div class="container">
 
@@ -78,7 +97,7 @@ const XP_LEVEL = 20000
 
 function addPlayer(){
 
-let nome = document.getElementById("nomePlayer").value
+let nome = document.getElementById("nomePlayer").value.trim()
 
 if(nome=="") return
 
@@ -94,11 +113,12 @@ Level: <span class="level">1</span>
 <div class="progress"></div>
 </div>
 
+<div class="info">
 XP: <span class="xp">0</span> / ${XP_LEVEL}
-
-<br><br>
+</div>
 
 <input class="xpInput" placeholder="XP ganho">
+
 <button onclick="addXP(this)">Adicionar XP</button>
 `
 
@@ -130,7 +150,7 @@ while(xp >= XP_LEVEL){
 xp -= XP_LEVEL
 level++
 
-alert("LEVEL UP! Agora nível "+level)
+alert("⭐ LEVEL UP! Agora nível "+level)
 
 }
 
