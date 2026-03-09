@@ -2,210 +2,148 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Criador de Personagem Escolar</title>
+<title>Sistema de XP RPG</title>
 
 <style>
+
 body{
-font-family: Arial, sans-serif;
+font-family:Arial;
 background:#111;
 color:white;
-margin:0;
-padding:12px;
+text-align:center;
+padding:20px;
 }
 
-h1{text-align:center}
-
 .container{
-max-width:600px;
+max-width:500px;
 margin:auto;
 }
 
-label{
-display:block;
-margin-top:12px;
-}
-
-select,input{
-width:100%;
-padding:12px;
-margin-top:4px;
-border-radius:10px;
+input,button{
+padding:10px;
+margin:5px;
 border:none;
+border-radius:8px;
 font-size:16px;
-}
-
-textarea{
-width:100%;
-margin-top:20px;
-padding:12px;
-border-radius:10px;
-border:none;
-font-size:15px;
-background:#222;
-color:white;
-height:260px;
 }
 
 button{
-width:100%;
-padding:12px;
-margin-top:10px;
-border:none;
-border-radius:10px;
 background:#4CAF50;
 color:white;
-font-size:16px;
+cursor:pointer;
 }
+
+.player{
+background:#222;
+padding:15px;
+margin-top:15px;
+border-radius:10px;
+}
+
+.bar{
+width:100%;
+background:#333;
+border-radius:10px;
+overflow:hidden;
+margin-top:10px;
+}
+
+.progress{
+height:20px;
+background:#4CAF50;
+width:0%;
+}
+
 </style>
+
 </head>
 
 <body>
 
+<h1>🎮 Sistema de XP</h1>
+
 <div class="container">
-<h1>🎒 Criador de Personagem Escolar</h1>
 
-<label>Nome</label>
-<input id="nome" placeholder="Nome do personagem" oninput="gerar()">
+<input id="nomePlayer" placeholder="Nome do jogador">
 
-<label>Gênero</label>
-<select id="genero" onchange="gerar()">
-<option>Masculino</option>
-<option>Feminino</option>
-</select>
+<button onclick="addPlayer()">Adicionar Player</button>
 
-<label>Origem Escolar</label>
-<select id="classe" onchange="gerar()">
-<option>Nerd</option>
-<option>Aluno de Teatro</option>
-<option>Atleta</option>
-<option>Jornalista</option>
-<option>Aluno Rebelde</option>
-<option>Representante de Sala</option>
-<option>Influencer</option>
-<option>Bibliotecário</option>
-<option>Valentão</option>
-</select>
-
-<label>Cabelo</label>
-<select id="cabelo" onchange="gerar()">
-<option>Curto</option>
-<option>Longo</option>
-<option>Rabo de cavalo</option>
-<option>Espetado</option>
-<option>Ondulado</option>
-</select>
-
-<label>Cor do cabelo</label>
-<select id="corcabelo" onchange="gerar()">
-<option>Preto</option>
-<option>Castanho</option>
-<option>Loiro</option>
-<option>Branco</option>
-<option>Vermelho</option>
-<option>Azul</option>
-</select>
-
-<label>Rosto</label>
-<select id="rosto" onchange="gerar()">
-<option>Normal</option>
-<option>Sério</option>
-<option>Feliz</option>
-<option>Misterioso</option>
-<option>Cicatriz no rosto</option>
-</select>
-
-<textarea id="resultado" readonly></textarea>
-
-<button onclick="copiar()">Copiar Resultado</button>
+<div id="players"></div>
 
 </div>
 
 <script>
 
-const origens = {
+const XP_LEVEL = 20000
 
-"Nerd":{
-pericias:"Investigação, Tecnologia",
-habilidade:"Mente Analítica: +2 em testes de Investigação ou Tecnologia ao analisar pistas ou computadores."
-},
+function addPlayer(){
 
-"Aluno de Teatro":{
-pericias:"Enganação, Artes",
-habilidade:"Atuação Convincente: uma vez por cena pode rerrolar teste de Enganação."
-},
+let nome = document.getElementById("nomePlayer").value
 
-"Atleta":{
-pericias:"Atletismo, Fortitude",
-habilidade:"Condicionamento Físico: +2 em Atletismo durante corridas ou perseguições."
-},
+if(nome=="") return
 
-"Jornalista":{
-pericias:"Investigação, Percepção",
-habilidade:"Caçador de Histórias: uma vez por sessão o mestre fornece uma pista."
-},
+let div = document.createElement("div")
+div.className="player"
 
-"Aluno Rebelde":{
-pericias:"Crime, Furtividade",
-habilidade:"Passos Silenciosos: +2 em Furtividade dentro da escola."
-},
+div.innerHTML = `
+<h3>${nome}</h3>
 
-"Representante de Sala":{
-pericias:"Persuasão, Vontade",
-habilidade:"Voz da Turma: uma vez por cena dá +1d em teste social de um aliado."
-},
+Level: <span class="level">1</span>
 
-"Influencer":{
-pericias:"Persuasão, Enganação",
-habilidade:"Popularidade: +2 em testes sociais com estudantes."
-},
+<div class="bar">
+<div class="progress"></div>
+</div>
 
-"Bibliotecário":{
-pericias:"Investigação, Ciências",
-habilidade:"Arquivo Vivo: +2 em investigação ao pesquisar livros."
-},
+XP: <span class="xp">0</span> / ${XP_LEVEL}
 
-"Valentão":{
-pericias:"Intimidação, Crime",
-habilidade:"Presença Ameaçadora: uma vez por cena rola +1d em Intimidação."
-}
+<br><br>
+
+<input class="xpInput" placeholder="XP ganho">
+<button onclick="addXP(this)">Adicionar XP</button>
+`
+
+document.getElementById("players").appendChild(div)
+
+document.getElementById("nomePlayer").value=""
 
 }
 
-function gerar(){
+function addXP(btn){
 
-let nome = document.getElementById("nome").value || "(sem nome)"
-let genero = document.getElementById("genero").value
-let classe = document.getElementById("classe").value
-let cabelo = document.getElementById("cabelo").value
-let corcabelo = document.getElementById("corcabelo").value
-let rosto = document.getElementById("rosto").value
+let player = btn.parentElement
 
-let pericias = origens[classe].pericias
-let habilidade = origens[classe].habilidade
+let xpSpan = player.querySelector(".xp")
+let levelSpan = player.querySelector(".level")
+let progress = player.querySelector(".progress")
+let input = player.querySelector(".xpInput")
 
-let texto =
-"PERSONAGEM ESCOLAR\n\n"+
-"Nome: "+nome+"\n"+
-"Gênero: "+genero+"\n"+
-"Origem: "+classe+"\n\n"+
-"Cabelo: "+cabelo+"\n"+
-"Cor do cabelo: "+corcabelo+"\n"+
-"Rosto: "+rosto+"\n\n"+
-"Perícias: "+pericias+"\n\n"+
-"Habilidade:\n"+habilidade
+let xp = parseInt(xpSpan.innerText)
+let level = parseInt(levelSpan.innerText)
+let ganho = parseInt(input.value)
 
-document.getElementById("resultado").value = texto
+if(isNaN(ganho)) return
+
+xp += ganho
+
+while(xp >= XP_LEVEL){
+
+xp -= XP_LEVEL
+level++
+
+alert("LEVEL UP! Agora nível "+level)
+
 }
 
-function copiar(){
-let campo = document.getElementById("resultado")
-campo.select()
-document.execCommand("copy")
-alert("Personagem copiado!")
-}
+xpSpan.innerText = xp
+levelSpan.innerText = level
 
-gerar()
+let percent = (xp / XP_LEVEL) * 100
+
+progress.style.width = percent+"%"
+
+input.value=""
+
+}
 
 </script>
 
